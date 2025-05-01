@@ -76,3 +76,49 @@ patchesStrategicMerge:
 
 3. Applying Overlays for Each Environment:
 - Use Kustomize to apply configurations for a specific environment `kustomize build ~/Advanced-kustomize-features/overlays/dev | kubectl apply -f -` to deploy the development configuration.
+
+## transformers-and-generators:
+Objective: Learn to use transformers and generators for resource customization.
+Detailed Steps with Comments:
+1. Customizing Labels for Production Environment
+- In overlays/prod/kustomization.yaml, use commonLabels to add labels to all resources for easy identification.
+```yaml
+# overlays/prod/kustomization.yaml
+commonLabels:
+  env: production  # Label applied to every resource
+
+```
+Implementing Name Prefixes:
+- Adding a prefix to resource names helps in distinguishing resources across different environments.
+```yaml
+namePrefix: prod-  # Prefix added to the name of all resources
+```
+
+## Secret and ConfigMap Management
+**Objective**: Effectively manage configuration data and secrets.
+Detailed Steps with Comments:
+1. Generating a ConfigMap
+- In the base `kustomization.yaml`, use `configMapGenerator` to create a ConfigMap from literal values.
+```yaml
+# base/kustomization.yaml
+configMapGenerator:
+- name: my-configmap  # Name of the ConfigMap
+  literals:
+  - key1=value1       # Key-value pairs
+  - key2=value2
+```
+2. Creating Secrets Safely
+- Use `secretGenerator` to generate Secrets. Ensure sensitive data like passwords are encoded or externally managed.
+```yaml
+# base/kustomization.yaml
+secretGenerator:
+- name: my-secret     # Name of the Secret
+  literals:
+  - username=admin    # Key-value pairs; consider external management for real secrets
+  - password=s3cr3t
+
+```
+**Note**: For actual projects, use secure methods to inject these values, like environment variables or secret management tools.
+
+3. Applying Configurations
+Deploy these configurations as part of your base or specific overlays depending on the use case.
