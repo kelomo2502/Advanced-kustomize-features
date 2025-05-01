@@ -55,3 +55,24 @@ A Computer with Adequate Resources:
 Description: Ensure your computer can handle running the necessary tools and applications.
 
 ## Lesson 3.1: Working with Overlays
+Objective: Master the use of overlays in Kustomize for different environmental configurations.
+Detailed Steps with Comments
+1. Creating Environment-Specific Directories:
+- In your project's overlays directory, create subdirectories for each environment.
+- Example: Run `mkdir -p overlays/{dev,staging,prod}` in your terminal to create directories for development, staging, and production environments.
+
+2. Setting Up Environment Configurations:
+- Each environment will have its own kustomization.yaml file to specify unique customizations.
+- Inside overlays/dev/kustomization.yaml, you might specify development-specific settings.
+```yaml
+# overlays/dev/kustomization.yaml
+bases:
+- ../../base       # Relative path to the base directory
+patchesStrategicMerge:
+- replica_count_dev.yaml  # Patch file to merge with the base
+
+```
+- replica_count_dev.yaml can be used to alter the number of replicas in the development environment.
+
+3. Applying Overlays for Each Environment:
+- Use Kustomize to apply configurations for a specific environment `kustomize build ~/Advanced-kustomize-features/overlays/dev | kubectl apply -f -` to deploy the development configuration.

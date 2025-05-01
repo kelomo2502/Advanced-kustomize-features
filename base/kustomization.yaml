@@ -1,0 +1,3 @@
+
+resources:
+  - deployment.yaml # List of resource files to include in this configuration
